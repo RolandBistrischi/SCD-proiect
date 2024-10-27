@@ -1,10 +1,12 @@
 package package_tracking.pkg;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import package_tracking.Courier.Courier;
+import package_tracking.Courier.CourierService;
+
 
 import java.util.List;
 
@@ -12,6 +14,8 @@ import java.util.List;
 public class PackageController {
     @Autowired
     private PackageService packageService;
+    @Autowired
+    private CourierService courierService;
 
     @PostMapping("/package")
     public Package create(@RequestBody Package myPackage) {
@@ -22,4 +26,25 @@ public class PackageController {
     public List<Package> FindAllPackages() {
         return packageService.FindAllPackages();
     }
+
+    @PutMapping("/package")
+    public Package updatePackageStatus(@RequestBody UpdatePackageRequest updatePackageRequest) {
+        try {
+            return packageService.updatePackageStatus(updatePackageRequest);
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
+        return null;
+    }
+
+    @DeleteMapping("/package")
+    public void deletePackage(Package pkg) {
+        packageService.delete(pkg);
+    }
+
+
+   /* @PostMapping("/courier")
+    public Courier createCourier(@RequestBody Courier courier) {
+        return courierService.create(courier);
+    }*/
 }
