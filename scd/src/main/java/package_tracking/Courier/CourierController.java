@@ -1,4 +1,4 @@
-/*package package_tracking.Courier;
+package package_tracking.Courier;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ public class CourierController {
     @Autowired
     private CourierService courierService;
 
-    @PostMapping
+    @PostMapping("/courier")
     public ResponseEntity<Courier> create(@RequestBody Courier courier) {
         try {
             Courier createdCourier = courierService.create(courier);
@@ -25,30 +25,34 @@ public class CourierController {
     }
 
 
-    /*@PostMapping
-    public Courier create(@RequestBody Courier courier) {
-        return courierService.create(courier);
-    }*/
-
-  /*  @GetMapping
+    @GetMapping
     public List<Courier> FindAllCourier() {
         return courierService.FindAllCourier();
     }
 
-   /* @PutMapping("/courier")
-    public Courier updateCourier(@RequestBody UpdatePackageRequest updatePackageRequest) {
+    @PutMapping("/courier")
+    public Courier updateCourier(@RequestBody Courier updateCourier) {
         try {
-            return courierService.updatePackageStatus(updatePackageRequest);
+            return courierService.updateCourier(updateCourier);
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
         return null;
-    }*/
+    }
 
-   /* @DeleteMapping
+    @DeleteMapping
     public void deleteCourier(Courier courier) {
         courierService.delete(courier);
     }
 
+    @GetMapping("/courier/withoutPendingPackages")
+    public List<Courier> getAllCouriersWithoutPendingPackages() {
+        return courierService.getAllCouriersWithoutPendingPackages();
+    }
+
+    @GetMapping("/courier/managers")
+    public List<Object[]> getAllManagersAndDeliveredNumber() {
+        return courierService.getAllManagersAndDeliveredNumber();
+    }
+
 }
-*/

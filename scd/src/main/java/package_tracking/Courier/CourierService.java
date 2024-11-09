@@ -2,9 +2,10 @@ package package_tracking.Courier;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import package_tracking.pkg.Status;
 
 import java.util.List;
+
 
 @Service
 public class CourierService {
@@ -19,9 +20,17 @@ public class CourierService {
         return courierRepository.findAll();
     }
 
-   /* public package_tracking.pkg.Package updatePackageStatus(UpdatePackageRequest updatePackageRequest) {
+    public Courier updateCourier(Courier updateCourier) {
 
-        package_tracking.pkg.Package pack = packageRepository.findById(updatePackageRequest.getId())
+        Courier courier = courierRepository.findById(updateCourier.getId())
+                .orElseThrow(() -> new RuntimeException("Curierul nu a fost gasit!"));
+
+        //courier=updateCourier;
+
+        return courierRepository.save(updateCourier);
+
+
+        /*Courier courier = packageRepository.findById(updatePackageRequest.getId())
                 .orElseThrow(() -> new RuntimeException("Pachetul nu a fost găsit!"));
 
         Status updateStatus=updatePackageRequest.getStatus();
@@ -33,10 +42,18 @@ public class CourierService {
         if(packageStatus.equals(Status.PENDING) && updateStatus.equals(Status.DELIVERED))
             pack.setStatus(updateStatus);
 
-        return packageRepository.save(pack);
+        return packageRepository.save(pack);*/
     }
-*/
+
     public void delete(Courier courier) {
         courierRepository.delete(courier);
+    }
+
+    public List<Courier> getAllCouriersWithoutPendingPackages() {
+        return courierRepository.getAllCouriersWithoutPendingPackages(Status.PENDING);
+    }
+
+    public List<Object[]> getAllManagersAndDeliveredNumber() {
+        return courierRepository.getAllManagersAndDeliveredNumber(Status.DELIVERED);
     }
 }

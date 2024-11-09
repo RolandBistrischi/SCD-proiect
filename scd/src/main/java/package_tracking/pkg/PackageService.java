@@ -3,6 +3,7 @@ package package_tracking.pkg;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import package_tracking.Courier.Courier;
 
 import java.util.List;
 
@@ -37,5 +38,9 @@ public class PackageService {
 
     public void delete(Package mypackage) {
         packageRepository.delete(mypackage);
+    }
+
+    public List<Package> getPackagesForCourier(Courier courier) {
+        return packageRepository.findByCourier(courier);
     }
 }

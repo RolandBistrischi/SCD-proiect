@@ -37,14 +37,24 @@ public class PackageController {
         return null;
     }
 
+    //sa fac sa se poata da update la tot Package.
+
     @DeleteMapping("/package")
     public void deletePackage(Package pkg) {
         packageService.delete(pkg);
     }
 
+    @GetMapping("/package/{courier_id}")
+    public List<Package> getPackagesForCourier(@PathVariable Integer courier_id) {
+        Courier courier = new Courier();
+        courier.setId(courier_id);
+        try {
+            return packageService.getPackagesForCourier(courier);
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
+        return null;
+    }
 
-   /* @PostMapping("/courier")
-    public Courier createCourier(@RequestBody Courier courier) {
-        return courierService.create(courier);
-    }*/
+
 }

@@ -1,9 +1,7 @@
 package package_tracking.Courier;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +16,7 @@ public class Courier {
     private Integer id;
     private String name;
     private String email;
-    private Integer manager_id;
+    @ManyToOne
+    @Nullable
+    private Courier manager;
 }
