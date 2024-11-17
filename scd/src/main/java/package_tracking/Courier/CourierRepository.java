@@ -12,15 +12,18 @@ import java.util.List;
 
 public interface CourierRepository extends JpaRepository<Courier, Integer> {
 
-    //@Query("SELECT c FROM Courier c WHERE c NOT IN (SELECT p.courier FROM Package p WHERE p.status = :status)")
-    @Query("SELECT c FROM Courier c LEFT JOIN Package p ON p.courier.id = c.id WHERE p.id IS NULL AND p.status = :status")
-    List<Courier> getAllCouriersWithoutPendingPackages(@Param("status") Status status);
+    @Query(value ="""
+            SELECT c.* FROM courier c 
+            WHERE c.id NOT IN (SELECT p.courier_id FROM package p WHERE p.status = 'PENDING')
+            """,
+            nativeQuery = true
+    )
+    List<Courier> getAllCouriersWithoutPendingPackages();
 
-    //@Query("SELECT c.manager.id, COUNT(p) FROM Courier c JOIN c.packages p WHERE p.status = :status GROUP BY c.manager.id")
-//    @Query("SELECT c.manager.id, COUNT(p) FROM Courier c JOIN c.packages p WHERE p.status = :status GROUP BY c.manager.id")
-
-    @Query("SELECT c.manager.id, COUNT(p) FROM Courier c JOIN c.packages p WHERE p.status = :status GROUP BY c.manager.id")
-    //@Query("SELECT c.manager.id, COUNT(p)")
-    List<Object[]> getAllManagersAndDeliveredNumber(@Param("status") Status status);
+    @Query(value="""
+    SELECT c.manager_id, COUNT(p.id) 
+    FROM courier c LEFT JOIN package p ON c.id = p.courier_id WHERE p.status = 'DELIVERED' GROUP BY c.id""",
+            nativeQuery = true)
+    List<Integer> getAllManagersAndDeliveredNumber();
 
 }

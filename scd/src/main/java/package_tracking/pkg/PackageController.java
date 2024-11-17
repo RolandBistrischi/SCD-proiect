@@ -9,7 +9,7 @@ import package_tracking.Courier.CourierService;
 
 
 import java.util.List;
-
+@RequestMapping("/package")
 @RestController
 public class PackageController {
     @Autowired
@@ -17,17 +17,17 @@ public class PackageController {
     @Autowired
     private CourierService courierService;
 
-    @PostMapping("/package")
+    @PostMapping
     public Package create(@RequestBody Package myPackage) {
         return packageService.create(myPackage);
     }
 
-    @GetMapping("/package")
+    @GetMapping
     public List<Package> FindAllPackages() {
         return packageService.FindAllPackages();
     }
 
-    @PutMapping("/package")
+    @PutMapping
     public Package updatePackageStatus(@RequestBody UpdatePackageRequest updatePackageRequest) {
         try {
             return packageService.updatePackageStatus(updatePackageRequest);
@@ -39,12 +39,12 @@ public class PackageController {
 
     //sa fac sa se poata da update la tot Package.
 
-    @DeleteMapping("/package")
+    @DeleteMapping
     public void deletePackage(Package pkg) {
         packageService.delete(pkg);
     }
 
-    @GetMapping("/package/{courier_id}")
+    @GetMapping("/{courier_id}")
     public List<Package> getPackagesForCourier(@PathVariable Integer courier_id) {
         Courier courier = new Courier();
         courier.setId(courier_id);

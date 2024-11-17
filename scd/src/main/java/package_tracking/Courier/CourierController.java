@@ -14,7 +14,7 @@ public class CourierController {
     @Autowired
     private CourierService courierService;
 
-    @PostMapping("/courier")
+    @PostMapping
     public ResponseEntity<Courier> create(@RequestBody Courier courier) {
         try {
             Courier createdCourier = courierService.create(courier);
@@ -30,7 +30,7 @@ public class CourierController {
         return courierService.FindAllCourier();
     }
 
-    @PutMapping("/courier")
+    @PutMapping
     public Courier updateCourier(@RequestBody Courier updateCourier) {
         try {
             return courierService.updateCourier(updateCourier);
@@ -45,13 +45,13 @@ public class CourierController {
         courierService.delete(courier);
     }
 
-    @GetMapping("/courier/withoutPendingPackages")
+    @GetMapping("/withoutPendingPackages")
     public List<Courier> getAllCouriersWithoutPendingPackages() {
         return courierService.getAllCouriersWithoutPendingPackages();
     }
 
-    @GetMapping("/courier/managers")
-    public List<Object[]> getAllManagersAndDeliveredNumber() {
+    @GetMapping("/managersAndDeliveredNumber")
+    public List<Integer> getAllManagersAndDeliveredNumber() {
         return courierService.getAllManagersAndDeliveredNumber();
     }
 

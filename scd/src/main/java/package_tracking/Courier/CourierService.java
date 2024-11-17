@@ -50,10 +50,11 @@ public class CourierService {
     }
 
     public List<Courier> getAllCouriersWithoutPendingPackages() {
-        return courierRepository.getAllCouriersWithoutPendingPackages(Status.PENDING);
+        return courierRepository.getAllCouriersWithoutPendingPackages();
     }
 
-    public List<Object[]> getAllManagersAndDeliveredNumber() {
-        return courierRepository.getAllManagersAndDeliveredNumber(Status.DELIVERED);
+    public List<Integer> getAllManagersAndDeliveredNumber(){
+        return courierRepository.getAllManagersAndDeliveredNumber();
     }
+
 }
