@@ -13,6 +13,9 @@ public class PackageService {
     private PackageRepository packageRepository;
 
     public Package create(Package myPackage) {
+        if (myPackage.getStatus() == null|| myPackage.getStatus().toString().isEmpty())
+            myPackage.setStatus(Status.NEW);
+
         return packageRepository.save(myPackage);
     }
 

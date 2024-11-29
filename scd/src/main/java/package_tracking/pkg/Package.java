@@ -23,7 +23,7 @@ public class Package {
     private String deliveryAddress;
 
     private boolean pay_on_delivery;
-    private Status status;
+    private Status status=Status.NEW;
     @ManyToOne
     @JoinColumn(name = "courier_id", nullable = true)
     private Courier courier;

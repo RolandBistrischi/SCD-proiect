@@ -11,6 +11,7 @@ import package_tracking.Courier.CourierService;
 import java.util.List;
 @RequestMapping("/package")
 @RestController
+@CrossOrigin
 public class PackageController {
     @Autowired
     private PackageService packageService;
