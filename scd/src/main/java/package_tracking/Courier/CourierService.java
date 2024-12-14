@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import package_tracking.pkg.Status;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,12 +50,34 @@ public class CourierService {
         courierRepository.delete(courier);
     }
 
+    public void deletebyId(Integer courier_id) {
+        courierRepository.deleteById(courier_id);
+    }
+
     public List<Courier> getAllCouriersWithoutPendingPackages() {
         return courierRepository.getAllCouriersWithoutPendingPackages();
     }
 
-    public List<Integer> getAllManagersAndDeliveredNumber(){
+    /*public List<Integer> getAllManagersAndDeliveredNumber() {
         return courierRepository.getAllManagersAndDeliveredNumber();
+    }*/
+    public List<ManagerWithDeliveredCount> getAllManagersAndDeliveredNumber() {
+        List<Object[]> results = courierRepository.getAllManagersAndDeliveredNumber();
+        return results.stream()
+                .map(result -> new ManagerWithDeliveredCount((Integer) result[0], ((Number) result[1]).intValue()))
+                .toList();
+    }
+
+
+    public List<Courier> getAllManagers() {
+        List<Integer> managerIds = courierRepository.findAllManagers();
+        List<Courier> couriers = new ArrayList<>();
+
+        for (Integer managerId : managerIds) {
+            courierRepository.findById(managerId).ifPresent(couriers::add);
+        }
+
+        return couriers;
     }
 
 }

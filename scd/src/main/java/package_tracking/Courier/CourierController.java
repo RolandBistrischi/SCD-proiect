@@ -42,8 +42,19 @@ public class CourierController {
     }
 
     @DeleteMapping
-    public void deleteCourier(Courier courier) {
+    public ResponseEntity<Void> deleteCourier(Courier courier) {
         courierService.delete(courier);
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCourierbyId(@PathVariable Integer id) {
+        try {
+            courierService.deletebyId(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping("/withoutPendingPackages")
@@ -52,8 +63,17 @@ public class CourierController {
     }
 
     @GetMapping("/managersAndDeliveredNumber")
-    public List<Integer> getAllManagersAndDeliveredNumber() {
+    public List<ManagerWithDeliveredCount> getAllManagersAndDeliveredNumber() {
         return courierService.getAllManagersAndDeliveredNumber();
     }
 
+    @GetMapping("/managers")
+    public ResponseEntity<List<Courier>> getAllManagers() {
+        try {
+            List<Courier> managers = courierService.getAllManagers();
+            return ResponseEntity.ok(managers);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

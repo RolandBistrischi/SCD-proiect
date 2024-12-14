@@ -22,8 +22,15 @@ public interface CourierRepository extends JpaRepository<Courier, Integer> {
 
     @Query(value="""
     SELECT c.manager_id, COUNT(p.id) 
-    FROM courier c LEFT JOIN package p ON c.id = p.courier_id WHERE p.status = 'DELIVERED' GROUP BY c.id""",
-            nativeQuery = true)
-    List<Integer> getAllManagersAndDeliveredNumber();
+    FROM courier c 
+    LEFT JOIN package p ON c.id = p.courier_id 
+    WHERE p.status = 'DELIVERED' 
+    GROUP BY c.manager_id
+    HAVING c.manager_id IS NOT NULL
+    """, nativeQuery = true)
+    List<Object[]> getAllManagersAndDeliveredNumber();
 
+
+    @Query(value="SELECT DISTINCT c.manager_id FROM Courier c WHERE c.manager_id IS NOT NULL",nativeQuery = true)
+    List<Integer> findAllManagers();
 }

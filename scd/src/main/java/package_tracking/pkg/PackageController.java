@@ -9,6 +9,8 @@ import package_tracking.Courier.CourierService;
 
 
 import java.util.List;
+import java.util.Optional;
+
 @RequestMapping("/package")
 @RestController
 @CrossOrigin
@@ -57,5 +59,30 @@ public class PackageController {
         return null;
     }
 
+    @GetMapping("/delivered")
+    public List<Package> getAllDeliveredPackages() {
+        return packageService.getAllDeliveredPackages();
+    }
 
+    @PutMapping("/deliverPackage/{packageId}")
+    public ResponseEntity<Package> deliverPackage(@PathVariable Integer packageId) {
+        try {
+            Optional<Package> deliveredPackage = packageService.updateStatusToDelivered(packageId);
+            return deliveredPackage.map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PutMapping("/assignPackage/{packageId}/{courierId}")
+    public ResponseEntity<Package> assignPackageToCourier(@PathVariable Integer packageId, @PathVariable Integer courierId) {
+        try {
+            Optional<Package> assignedPackage = packageService.assignPackageToCourier(packageId, courierId);
+            return assignedPackage.map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
