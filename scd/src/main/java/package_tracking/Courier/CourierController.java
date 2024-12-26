@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import package_tracking.Courier.EmailFolder.EmailRequest;
 
 
 import java.util.List;
@@ -76,4 +77,15 @@ public class CourierController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @PostMapping("/sendEmail")
+    public ResponseEntity<String> sendEmailToSelected(@RequestBody EmailRequest emailRequest) {
+        try {
+            courierService.sendEmails(emailRequest.getEmails(), emailRequest.getSubject(), emailRequest.getBody());
+            return ResponseEntity.ok("Emails sent successfully");
+        } catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send due to " + e.getMessage());
+        }
+    }
+
 }
