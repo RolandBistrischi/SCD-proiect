@@ -15,14 +15,14 @@ namespace WinFormsApp1
     {
         private static readonly HttpClient client = new();
 
-        /*public void createConnection()
+
+        public CourierService()
         {
-            // Update port # in the following line.
             client.BaseAddress = new Uri("http://localhost:8083/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-        }*/
+        }
 
         public List<Courier>? GetCouriers()
         {
@@ -38,33 +38,73 @@ namespace WinFormsApp1
             return null;
         }
 
-        public List<Courier> GetAllCourierwitoutPendingPackages() {
-            List<Courier>? courier = null;
-            HttpResponseMessage response = client.GetAsync("courier/withoutPendingPackages").Result;
-            if (response.IsSuccessStatusCode)
+        public List<Courier> GetAllCouriersWithoutPendingPackages()
+        {
+            try
             {
-                string resultString = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine("received : " + resultString);
-                 courier = JsonSerializer.Deserialize<List<Courier>>(resultString);
-                           }
-
-            return courier;
-        }
-
-      public List<Courier> GetAllManagersAndTheirNumberOfPackages() {
-            List<Courier>? courier = null;
-            HttpResponseMessage response = client.GetAsync("courier/managersAndDeliveredNumber").Result;
-            if (response.IsSuccessStatusCode)
-            {
-                string resultString = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine("received : " + resultString);
-                courier = JsonSerializer.Deserialize<List<Courier>>(resultString);
+                HttpResponseMessage response = client.GetAsync("courier/withoutPendingPackages").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string resultString = response.Content.ReadAsStringAsync().Result;
+                    Console.WriteLine("received: " + resultString);
+                    return JsonSerializer.Deserialize<List<Courier>>(resultString) ?? new List<Courier>();
+                }
+                return new List<Courier>();
             }
-
-            return courier;
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Eroare: {ex.Message}");
+                return new List<Courier>();
+            }
         }
 
-        public void SendEmailtoAllSelectedPersons() {
+        public List<ManagerWithDeliveredCount> GetAllManagersAndTheirNumberOfPackages()
+        {
+            try
+            {
+                HttpResponseMessage response = client.GetAsync("courier/managersAndDeliveredNumber").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string resultString = response.Content.ReadAsStringAsync().Result;
+                    Console.WriteLine("received: " + resultString);
+                    var a = JsonSerializer.Deserialize<List<ManagerWithDeliveredCount>>(resultString) ?? new List<ManagerWithDeliveredCount>();
+                    return a;
+                }
+                return new List<ManagerWithDeliveredCount>();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Eroare: {ex.Message}");
+                return new List<ManagerWithDeliveredCount>();
+            }
+        }
+
+        public void SendEmailToSelectedCouriers( EmailRequest emailRequest )
+        {
+            try
+            {
+                var content = new StringContent(JsonSerializer.Serialize(emailRequest));
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                HttpResponseMessage response = client.PostAsync("courier/sendEmail", content).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Email-urile au fost trimise cu succes!");
+                }
+                else
+                {
+                    MessageBox.Show($"Eroare la trimiterea email-urilor: {response.ReasonPhrase}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Eroare: {ex.Message}");
+            }
+        }
+
+
+        public void SendEmailwithCSharp( List<Courier> couriersList )
+        {
             try
             {
                 MailMessage message = new();
@@ -88,5 +128,8 @@ namespace WinFormsApp1
                 MessageBox.Show("err: " + ex.Message);
             }
         }
+
+
     }
+
 }

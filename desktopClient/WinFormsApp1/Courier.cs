@@ -11,6 +11,7 @@ namespace WinFormsApp1
 {
     internal class Courier
     {
+        [JsonPropertyName("id")]
         public int Id
         {
             get; set;
@@ -34,4 +35,22 @@ namespace WinFormsApp1
             get; set;
         }
     }
+
+   
+
+    internal class ManagerWithDeliveredCount
+    {
+        [JsonPropertyName("courier")]
+        public Courier courier
+        {
+            get; set;
+        }
+        [JsonPropertyName("deliveredCount")]
+        public int deliveredCount
+        {
+            get; set;
+        }
+    }
+
+
 }

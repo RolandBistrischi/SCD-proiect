@@ -6,9 +6,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import package_tracking.pkg.Status;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -23,6 +23,10 @@ public class CourierService {
 
     public Courier create(Courier courier) {
         return courierRepository.save(courier);
+    }
+
+    public Optional<Courier> getCourier(Integer id) {
+        return courierRepository.findById(id);
     }
 
     public List<Courier> FindAllCourier() {
@@ -66,15 +70,35 @@ public class CourierService {
         return courierRepository.getAllCouriersWithoutPendingPackages();
     }
 
-    /*public List<Integer> getAllManagersAndDeliveredNumber() {
-        return courierRepository.getAllManagersAndDeliveredNumber();
-    }*/
+
     public List<ManagerWithDeliveredCount> getAllManagersAndDeliveredNumber() {
-        List<Object[]> results = courierRepository.getAllManagersAndDeliveredNumber();
-        return results.stream()
-                .map(result -> new ManagerWithDeliveredCount((Integer) result[0], ((Number) result[1]).intValue()))
-                .toList();
+              List<Object[]> results = courierRepository.getAllManagersAndDeliveredNumber();
+
+        Map<Integer, Integer> resultat = results.stream()
+                .collect(Collectors.toMap(
+                        result -> (Integer) result[0], // courier_id
+                        result -> ((Number) result[1]).intValue() // deliveredCount
+                ));
+
+        List<ManagerWithDeliveredCount> managerWithDeliveredCountList = new ArrayList<>();
+
+        for (Map.Entry<Integer, Integer> entry : resultat.entrySet()) {
+            Integer courierId = entry.getKey();
+            Integer deliveredCount = entry.getValue();
+
+            ManagerWithDeliveredCount man = new ManagerWithDeliveredCount();
+            man.setDeliveredCount(deliveredCount);
+
+            Optional<Courier> courier = getCourier(courierId);
+            courier.ifPresent(cur -> {
+                man.setCourier(cur);
+                managerWithDeliveredCountList.add(man);
+            });
+        }
+
+        return managerWithDeliveredCountList;
     }
+
 
 
     public List<Courier> getAllManagers() {

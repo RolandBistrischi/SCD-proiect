@@ -6,7 +6,7 @@ namespace WinFormsApp1
 {
     internal class PackageService
     {
-        private static readonly HttpClient client = new HttpClient();
+        private static readonly HttpClient client = new();
 
         public void createConnection()
         {
@@ -19,26 +19,36 @@ namespace WinFormsApp1
 
         public static List<Package> GetPackages()
         {
-            List<Package> packages = new();
-            HttpResponseMessage response = client.GetAsync("package").Result;
+            HttpResponseMessage response;
+
+            try
+            {
+                response = client.GetAsync("package").Result;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Server indisponibil! Eroare: {ex.Message}");
+                return new();
+            }
 
             if (!response.IsSuccessStatusCode)
             {
-                return packages;
+                MessageBox.Show($"Eroare: {response.StatusCode} - {response.ReasonPhrase}");
+                return new();
             }
 
-            string resultString = response.Content.ReadAsStringAsync().Result;
-            Console.WriteLine("received : " + resultString);
             try
             {
-                packages = JsonSerializer.Deserialize<List<Package>>(resultString) ?? new();
+                string resultString = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine("received : " + resultString);
+
+                return JsonSerializer.Deserialize<List<Package>>(resultString) ?? new();
             }
             catch (JsonException ex)
             {
-                Console.WriteLine("Deserialization failed: " + ex.Message);
-                packages = new();
+                Console.WriteLine($"Deserialization failed: {ex.Message}");
+                return new();
             }
-            return packages;
         }
 
         public List<Courier?> GetBusyCouriers()
