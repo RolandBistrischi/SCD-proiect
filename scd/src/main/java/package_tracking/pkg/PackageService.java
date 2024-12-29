@@ -85,4 +85,8 @@ public class PackageService {
         }
         return Optional.empty();
     }
+
+    public  List<Package> getUnassignedPackages() {
+        return packageRepository.findUnassignedPackages();
+    }
 }

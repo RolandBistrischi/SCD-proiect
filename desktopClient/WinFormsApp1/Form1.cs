@@ -17,7 +17,7 @@ namespace WinFormsApp1
             courseService = new CourierService();
         }
 
-        private void button1_Click( object sender, EventArgs e )
+        private void button1_Click(object sender, EventArgs e)
         {
             var couriersList = packageService.GetBusyCouriers();
 
@@ -25,14 +25,14 @@ namespace WinFormsApp1
             comboBox1.DisplayMember = "name";
         }
 
-        private void buttonLoadAllCourier_Click( object sender, EventArgs e )
+        private void buttonLoadAllCourier_Click(object sender, EventArgs e)
         {
             var courierList = courseService.GetAllCouriersWithoutPendingPackages();
             comboBoxPending.DataSource = courierList;
             comboBoxPending.DisplayMember = "name";
         }
 
-        private void button3_Click( object sender, EventArgs e )
+        private void button3_Click(object sender, EventArgs e)
         {
             var managers = courseService.GetAllManagersAndTheirNumberOfPackages();
 
@@ -56,19 +56,19 @@ namespace WinFormsApp1
             }
 
             dataGridViewManagersAndNumbers.Rows.AddRange(rows.ToArray());
-            dataGridViewManagersAndNumbers.Columns ["CourierName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewManagersAndNumbers.Columns ["DeliveredCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewManagersAndNumbers.Columns["CourierName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewManagersAndNumbers.Columns["DeliveredCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
 
-        private void buttonLoadCouriers_Click( object sender, EventArgs e )
+        private void buttonLoadCouriers_Click(object sender, EventArgs e)
         {
             var couriers = courseService.GetCouriers();
             checkedListBox1.DataSource = couriers;
             checkedListBox1.DisplayMember = "name";
         }
 
-        private void buttonSendEmail_Click( object sender, EventArgs e )
+        private void buttonSendEmail_Click(object sender, EventArgs e)
         {
             var subject = textBoxSubject.Text.Trim();
             var body = richTextBoxBody.Text.Trim();

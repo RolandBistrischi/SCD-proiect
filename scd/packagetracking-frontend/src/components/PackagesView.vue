@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h2 class="text-h5">Available packages</h2>
+    <h2 class="text-h5">View all packages</h2>
     <v-btn text="refresh" @click="fetchPackages"></v-btn>
     <v-data-table
       :items="packages"

@@ -1,42 +1,60 @@
 <template>
   <v-app>
     <v-main>
-      <packages-view/>
+      <packages-view />
+      <view-my-packages />
+      <assign-package />
 
-      <v-btn style="align-content: center" @click="openDialog">
+      <!-- Butoane pentru deschiderea dialogurilor -->
+      <v-btn style="align-content: center" @click="openPackageDialog">
         Create new package
       </v-btn>
+      <v-btn style="align-content: center" @click="openCourierDialog">
+        Create new courier
+      </v-btn>
 
+      <!-- Dialoguri -->
       <add-package
           :currentUser="username"
-          ref="addPostDialog"
+          ref="addPackageDialog"
       ></add-package>
+      <add-courier
+          :currentUser="username"
+          ref="addCourierDialog"
+      ></add-courier>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import PackagesView from './components/PackagesView.vue'
+import AddCourier from "@/components/AddCourier.vue";
 import AddPackage from "@/components/AddPackage.vue";
+import PackagesView from "@/components/PackagesView.vue";
+import ViewMyPackages from "@/components/ViewMyPackages.vue";
+import AssignPackage from "@/components/AssignPackage.vue";
 
 export default {
   name: 'App',
 
   components: {
     PackagesView,
-    AddPackage
+    AddPackage,
+    AddCourier,
+    ViewMyPackages,
+    AssignPackage
   },
 
   data: () => ({
-    username: "Nume utilizator"
+    username: "Utilizator nou"
   }),
-  mounted() {
-    this.$refs.addPostDialog.showDialog = false
-  },
+
   methods: {
-    openDialog() {
-      this.$refs.addPostDialog.showDialog = true
+    openPackageDialog() {
+      this.$refs.addPackageDialog.showDialog = true;
+    },
+    openCourierDialog() {
+      this.$refs.addCourierDialog.showDialog = true;
     }
   }
-}
+};
 </script>

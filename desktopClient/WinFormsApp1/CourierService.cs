@@ -79,11 +79,15 @@ namespace WinFormsApp1
             }
         }
 
-        public void SendEmailToSelectedCouriers( EmailRequest emailRequest )
+        public void SendEmailToSelectedCouriers(EmailRequest emailRequest)
         {
             try
             {
+               // var serializedEmailRequest = JsonSerializer.Serialize(emailRequest);
+               // Console.WriteLine($"Serialized JSON: {serializedEmailRequest}");
+
                 var content = new StringContent(JsonSerializer.Serialize(emailRequest));
+
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                 HttpResponseMessage response = client.PostAsync("courier/sendEmail", content).Result;
@@ -93,7 +97,8 @@ namespace WinFormsApp1
                 }
                 else
                 {
-                    MessageBox.Show($"Eroare la trimiterea email-urilor: {response.ReasonPhrase}");
+                    var errorDetails = response.Content.ReadAsStringAsync().Result;
+                    MessageBox.Show($"Eroare la trimiterea email-urilor: {errorDetails}");
                 }
             }
             catch (Exception ex)
@@ -103,7 +108,7 @@ namespace WinFormsApp1
         }
 
 
-        public void SendEmailwithCSharp( List<Courier> couriersList )
+        public void SendEmailwithCSharp(List<Courier> couriersList)
         {
             try
             {

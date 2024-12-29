@@ -8,6 +8,7 @@ import package_tracking.Courier.EmailFolder.EmailRequest;
 
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @CrossOrigin
@@ -15,6 +16,7 @@ import java.util.List;
 public class CourierController {
     @Autowired
     private CourierService courierService;
+    private static final Logger logger = Logger.getLogger(CourierController.class.getName());
 
     @PostMapping
     public ResponseEntity<Courier> create(@RequestBody Courier courier) {
@@ -81,10 +83,14 @@ public class CourierController {
     @PostMapping("/sendEmail")
     public ResponseEntity<String> sendEmailToSelected(@RequestBody EmailRequest emailRequest) {
         try {
-            courierService.sendEmails(emailRequest.getEmails(), emailRequest.getSubject(), emailRequest.getBody());
+            System.out.println("inainte de rrimitere");
+            courierService.sendEmails(emailRequest);
+            System.out.println("skjdfhgbvvvvvv");
             return ResponseEntity.ok("Emails sent successfully");
         } catch (Exception e) {
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send due to " + e.getMessage());
+            String errorMessage = "Error occurred while sending emails: " + e.getMessage();
+            logger.severe(errorMessage);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
     }
 

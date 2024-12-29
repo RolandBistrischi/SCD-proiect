@@ -17,4 +17,9 @@ public interface PackageRepository extends JpaRepository<Package, Integer> {
             nativeQuery = true)
     List<Package> findAllByStatus(@Param("status") Status status);
 
+    @Query(value = """
+            SELECT * FROM Package p WHERE p.courier_id IS NULL""",
+            nativeQuery = true)
+    List<Package> findUnassignedPackages();
+
 }

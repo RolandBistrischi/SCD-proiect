@@ -85,4 +85,9 @@ public class PackageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/unassigned")
+    public  List<Package> getUnassignedPackages() {
+        return packageService.getUnassignedPackages();
+    }
 }
