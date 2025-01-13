@@ -42,6 +42,8 @@
             buttonLoadManagers = new Button();
             label3 = new Label();
             tabPageSendEmail = new TabPage();
+            label6 = new Label();
+            label5 = new Label();
             richTextBoxBody = new RichTextBox();
             checkedListBox1 = new CheckedListBox();
             textBoxSubject = new TextBox();
@@ -191,6 +193,8 @@
             // 
             // tabPageSendEmail
             // 
+            tabPageSendEmail.Controls.Add(label6);
+            tabPageSendEmail.Controls.Add(label5);
             tabPageSendEmail.Controls.Add(richTextBoxBody);
             tabPageSendEmail.Controls.Add(checkedListBox1);
             tabPageSendEmail.Controls.Add(textBoxSubject);
@@ -203,6 +207,24 @@
             tabPageSendEmail.TabIndex = 3;
             tabPageSendEmail.Text = "Send Email";
             tabPageSendEmail.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(489, 14);
+            label6.Name = "label6";
+            label6.Size = new Size(43, 20);
+            label6.TabIndex = 12;
+            label6.Text = "Body";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(242, 276);
+            label5.Name = "label5";
+            label5.Size = new Size(58, 20);
+            label5.TabIndex = 11;
+            label5.Text = "Subject";
             // 
             // richTextBoxBody
             // 
@@ -222,7 +244,7 @@
             // 
             // textBoxSubject
             // 
-            textBoxSubject.Location = new Point(227, 278);
+            textBoxSubject.Location = new Point(324, 276);
             textBoxSubject.Name = "textBoxSubject";
             textBoxSubject.Size = new Size(209, 27);
             textBoxSubject.TabIndex = 8;
@@ -299,5 +321,7 @@
         private Button buttonSendEmail;
         private RichTextBox richTextBoxBody;
         private DataGridView dataGridViewManagersAndNumbers;
+        private Label label6;
+        private Label label5;
     }
 }

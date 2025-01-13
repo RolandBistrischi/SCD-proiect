@@ -79,14 +79,14 @@ namespace WinFormsApp1
             }
         }
 
-        public void SendEmailToSelectedCouriers(EmailRequest emailRequest)
+        public void SendEmailToSelectedCouriers( EmailRequest emailRequest )
         {
             try
             {
-               // var serializedEmailRequest = JsonSerializer.Serialize(emailRequest);
-               // Console.WriteLine($"Serialized JSON: {serializedEmailRequest}");
+                var serializedEmailRequest = JsonSerializer.Serialize(emailRequest);
+                // Console.WriteLine($"Serialized JSON: {serializedEmailRequest}");
 
-                var content = new StringContent(JsonSerializer.Serialize(emailRequest));
+                var content = new StringContent(serializedEmailRequest);
 
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
@@ -108,7 +108,7 @@ namespace WinFormsApp1
         }
 
 
-        public void SendEmailwithCSharp(List<Courier> couriersList)
+        public void SendEmailwithCSharp( List<Courier> couriersList )
         {
             try
             {
